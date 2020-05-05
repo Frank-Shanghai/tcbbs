@@ -1,14 +1,16 @@
 import { SHA1 } from "./SHA1";
 
 // TODO: Replace the AppId and AppKey with yours later
-const AppId = 'A6053788184630';
-const AppKey = '8B3F5860-2646-2C47-DC50-39106919B260';
+const AppId = "A6053788184630";
+const AppKey = "8B3F5860-2646-2C47-DC50-39106919B260";
+// const AppId = 'A6032109929200';
+// const AppKey = '22DAAB12-777A-D941-BF0A-46EDD8C70138';
 var now = Date.now();
 const secureAppKey = SHA1(AppId + 'UZ' + AppKey + 'UZ' + now) + '.' + now;
 
 const headers = new Headers({
-    "X-APIClound-AppId": AppId,
-    "X-APIClound-AppKey": secureAppKey,
+    "X-APICloud-AppId": AppId,
+    "X-APICloud-AppKey": secureAppKey,
     "Accept": "application/json",
     "Content-Type": "application/json"
 });

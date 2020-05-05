@@ -14,10 +14,14 @@ export const types = {
 // action creators 
 export const actions = {
     startRequest: () => {
-        return types.START_REQUEST;
+        return {
+            type: types.START_REQUEST
+        };
     },
     finishRequest: () => {
-        return types.FINISH_REQUEST;
+        return {
+            type: types.FINISH_REQUEST
+        };
     },
     setError: (error) => {
         return {
@@ -26,6 +30,8 @@ export const actions = {
         };
     },
     removeError: () => {
-        return types.REMOVE_ERROR;
+        return {
+            type: types.REMOVE_ERROR
+        };
     }
 };

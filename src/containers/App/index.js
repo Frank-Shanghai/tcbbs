@@ -4,6 +4,7 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import connectRoute from '../../utils/connectRoute';
 import asyncComponent from "../../utils/AsyncComponent";
+import {actions as appActions} from '../../redux/modules/app';
 
 
 const AsyncHome = connectRoute(asyncComponent(() => import("../Home")));
@@ -26,4 +27,10 @@ class App extends Component {
     }
 }
 
-export default App;
+const mapDispatchToProps = dispatch => {
+    return {
+      ...bindActionCreators(appActions, dispatch)
+    };
+  };
+
+export default connect(undefined, mapDispatchToProps)(App);;
