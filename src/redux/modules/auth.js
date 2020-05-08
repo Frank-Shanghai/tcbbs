@@ -25,7 +25,7 @@ export const actions = {
                 dispatch(appActions.finishRequest());
 
                 if(!data.error){
-                    dispatch(actions.setLoginInfo(data.userId, data.username));
+                    dispatch(actions.setLoginInfo(data.userId, userName));
                 }
                 else{
                     dispatch(appActions.setError(data.error));

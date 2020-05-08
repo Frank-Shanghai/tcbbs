@@ -10,12 +10,14 @@ class Header extends Component{
             <div className="header">
                 <div className="nav">
                     <span className="left-link">
-                        <Link to="/">首页</Link>
+                        <Link to="/">Home</Link>
                     </span>
                     {(userName && userName.length > 0) ? (
                         // Pay attention to the styling name, should use camel format without dash
-                        <span className="user" style="marginRight: 5px">
-                            当前用户： {userName} <button onClick={}>注销</button>
+                        // style用了两个大括号，第一个大括号表示style的值是一个JavaScript表达式;第二个大括号
+                        // 表示这个JavaScript表达式是一个对象。 《React进阶之路》P29
+                        <span className="user" style={{marginRight: "5px"}}>
+                            当前用户： {userName} <button onClick={onLogout}>注销</button>
                         </span>                        
                     ) : (
                         <span className="right-link">

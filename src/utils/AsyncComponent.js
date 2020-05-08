@@ -2,6 +2,7 @@ import React, { Component } from "react";
 
 // React高阶组件（HOC：High Order Component), React优化，按需加载
 // https://www.jianshu.com/p/e00f9ea88c97
+// <React 进阶之路> P134 135 代码分片
 export default function asyncComponent(importComponent){
     return class AsyncComponent extends Component{
         constructor(props){

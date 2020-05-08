@@ -35,3 +35,31 @@ export const actions = {
         };
     }
 };
+
+// reducers
+const reducer = (state = initialState, action) => {
+    switch (action.type) {
+        case types.START_REQUEST:
+            // everytime receive a request, increase requestQuantity
+            return { ...state, requestQuantity: state.requestQuantity + 1 };
+        case types.FINISH_REQUEST:
+            return { ...state, requestQuantity: state.requestQuantity - 1 };
+        case types.SET_ERROR:
+            return { ...state, error: action.error };
+        case types.REMOVE_ERROR:
+            return { ...state, error: null };
+        default:
+            return state;
+    }    
+};
+
+export default reducer;
+
+// selectors
+export const getError = (state) => {
+    return state.app.error;
+};
+
+export const getRequestQuantity = (state) => {
+    return state.app.requestQuantity;
+};
