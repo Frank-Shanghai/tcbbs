@@ -23,3 +23,8 @@ export const getPostListWithAuthors = state => {
         return {...post, author: auth};
     });
 }
+
+export const getPostDetail = (state, id) => {
+    const post = getPostById(state, id);
+    return post ? {...post, author: getUserById(state, post.author)} : null;
+}

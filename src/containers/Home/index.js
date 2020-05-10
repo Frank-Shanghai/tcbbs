@@ -9,6 +9,7 @@ import {connect} from 'react-redux';
 import {Route} from 'react-router-dom';
 
 const AsyncPostList = connectRoute(asyncComponent(() => import("../PostList")));
+const AsyncPost = connectRoute(asyncComponent(() => import('../Post')));
 
 class Home extends Component {
     constructor(props) {
@@ -34,6 +35,9 @@ class Home extends Component {
                 <Route path={match.url}
                     exact
                     render={props => <AsyncPostList {...props} />}
+                />
+                <Route path={`${match.url}/:id`}
+                    render={props => <AsyncPost {...props} />}
                 />
             </div>
         );
