@@ -10,7 +10,8 @@ const initialState = {
 
 // action types
 export const types = {
-    FETCH_ALL_POSTS: "POSTS/FETCH_ALL_POSTS"
+    FETCH_ALL_POSTS: "POSTS/FETCH_ALL_POSTS",
+    FETCH_POST: "FETCH_POST"
 };
 
 // action creators
@@ -32,6 +33,24 @@ export const actions = {
                 });
             }
         }
+    },
+    // fetch post details
+    fetchPost: id => {
+        return (dispatch, getState) => {
+            if(shouldFetchPost(id, getState())) {
+                dispatch(appActions.startRequest());
+                return get(url.getPostById(id)).then(data => {
+                    dispatch(appActions.finishRequest());
+                    if(!data.error && data.length === 1) {
+                        const {post, author }= convertSinglePostToPlain(data[0]);
+                        dispatch(fetchPostSuccess(post, author));
+                    }
+                    else {
+                        dispatch(appActions.setError(data.error));
+                    }
+                });
+            }
+        }
     }
 };
 
@@ -42,6 +61,14 @@ const fetchAllPostsSuccess = (posts, postIds, authors) => ({
     postIds: postIds,
     users: authors
 });
+
+const fetchPostSuccess = (post, author) => {
+    return {
+        type: types.FETCH_POST,
+        post: post,
+        user: author
+    };
+};
 
 const convertPostsToPlain = posts => {
     let postsById = {};
@@ -63,9 +90,22 @@ const convertPostsToPlain = posts => {
     };
 }
 
+const convertSinglePostToPlain = post => {
+    const plainPost = {...post, author: post.author.id};
+    const author = {...post.author};
+    return {
+        post: plainPost,
+        author: author
+    };
+};
+
 // P175， redux的缓存作用. 不是每次re-render都要获取数据. 至于刷新操作，可以加另外一个state field来辨别
 const shouldFetchAllPosts = state => {
     return !state.posts.allIds || state.posts.allIds.length === 0;
+};
+
+const shouldFetchPost = (id, state) => {
+    return !state.posts.byId[id] || !state.posts.byId[id].content;
 };
 
 // reducers
@@ -82,6 +122,11 @@ const byId = (state = initialState.byId, action) => {
     switch(action.type){
         case types.FETCH_ALL_POSTS:
             return action.posts;
+        case types.FETCH_POST:
+            return {
+                ...state,
+                [action.post.id]: action.post
+            };
         default:
             return state;
     }
