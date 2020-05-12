@@ -24,5 +24,7 @@ function encodeFilter(filter) {
 export default {
     login: () => { return "user/login"; },
     getPostList: () => `/Post?filter=${encodeFilter(postListFilter)}`,
-    getPostById: (id) => `/post?filter=${encodeFilter(postByIdFilter(id))}`
+    getPostById: (id) => `/post?filter=${encodeFilter(postByIdFilter(id))}`,
+    updatePost: id => `/post/${id}`,
+    createPost: () => "/post"
 }

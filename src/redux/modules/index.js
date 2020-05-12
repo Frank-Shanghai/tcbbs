@@ -3,13 +3,15 @@ import auth from './auth';
 import posts, {getPostIds, getPostById} from './posts';
 import app from './app';
 import users, { getUserById } from './users';
+import ui from './ui';
 
 // combine all module reducers into one root reducer
 const rootReducer = combineReducers({
     app: app,
     users: users,
     auth: auth,
-    posts: posts
+    posts: posts,
+    ui: ui
 });
 
 export default rootReducer;
