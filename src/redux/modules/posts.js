@@ -11,7 +11,9 @@ const initialState = {
 // action types
 export const types = {
     FETCH_ALL_POSTS: "POSTS/FETCH_ALL_POSTS",
-    FETCH_POST: "FETCH_POST"
+    FETCH_POST: "POSTS/FETCH_POST",
+    UPDATE_POST: "POSTS/UPDATE_POST",
+    CREATE_POST: "POSTS/CREATE_POST"
 };
 
 // action creators
@@ -37,12 +39,12 @@ export const actions = {
     // fetch post details
     fetchPost: id => {
         return (dispatch, getState) => {
-            if(shouldFetchPost(id, getState())) {
+            if (shouldFetchPost(id, getState())) {
                 dispatch(appActions.startRequest());
                 return get(url.getPostById(id)).then(data => {
                     dispatch(appActions.finishRequest());
-                    if(!data.error && data.length === 1) {
-                        const {post, author }= convertSinglePostToPlain(data[0]);
+                    if (!data.error && data.length === 1) {
+                        const { post, author } = convertSinglePostToPlain(data[0]);
                         dispatch(fetchPostSuccess(post, author));
                     }
                     else {
@@ -51,6 +53,46 @@ export const actions = {
                 });
             }
         }
+    },
+    // update post
+    updatePost: (id, post) => {
+        return dispatch => {
+            dispatch(appActions.startRequest());
+            return put(url.updatePost(id), post).then(data => {
+                dispatch(appActions.finishRequest());
+                if (!data.error) {
+                    dispatch(updatePostSuccess(data));
+                }
+                else {
+                    dispatch(appActions.setError(data.error));
+                }
+            });
+        };
+    },
+
+    // create post
+    createPost: (title, content) => {
+        return (dispatch, getState) => {
+            const state = getState();
+            const author = state.auth.userId;
+            const params = {
+                author: author,
+                title: title,
+                content: content,
+                vote: 0
+            };
+
+            dispatch(appActions.startRequest());
+            return post(url.createPost(), params).then(data => {
+                dispatch(appActions.finishRequest());
+                if(!data.error){
+                    dispatch(createPostSuccess(data));
+                }
+                else {
+                    dispatch(appActions.setError(data.error));
+                }
+            });
+        };
     }
 };
 
@@ -67,6 +109,20 @@ const fetchPostSuccess = (post, author) => {
         type: types.FETCH_POST,
         post: post,
         user: author
+    };
+};
+
+const updatePostSuccess = (post) => {
+    return {
+        type: types.UPDATE_POST,
+        post: post
+    };
+};
+
+const createPostSuccess = (post) => {
+    return {
+        type: types.CREATE_POST,
+        post: post
     };
 };
 
@@ -91,8 +147,8 @@ const convertPostsToPlain = posts => {
 }
 
 const convertSinglePostToPlain = post => {
-    const plainPost = {...post, author: post.author.id};
-    const author = {...post.author};
+    const plainPost = { ...post, author: post.author.id };
+    const author = { ...post.author };
     return {
         post: plainPost,
         author: author
@@ -113,16 +169,20 @@ const allIds = (state = initialState.allIds, action) => {
     switch (action.type) {
         case types.FETCH_ALL_POSTS:
             return action.postIds;
+        case types.CREATE_POST:
+            return [action.post.id, ...state];
         default:
             return state;
     }
 };
 
 const byId = (state = initialState.byId, action) => {
-    switch(action.type){
+    switch (action.type) {
         case types.FETCH_ALL_POSTS:
             return action.posts;
         case types.FETCH_POST:
+        case types.UPDATE_POST:
+        case types.CREATE_POST:
             return {
                 ...state,
                 [action.post.id]: action.post
