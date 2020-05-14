@@ -1,4 +1,5 @@
 import { types as postTypes } from "./posts";
+import { types as commentTypes} from "./comments";
 
 const initialState = {};
 
@@ -7,6 +8,7 @@ const reducer = (state = initialState, action) => {
     switch (action.type) {
         // 获取评论列表和帖子列表时，更新列表数据中包含的所有作者信息
         case postTypes.FETCH_ALL_POSTS:
+        case commentTypes.FETCH_COMMENTS:
             return { ...state, ...action.users };
 
         // 获取帖子详情时，只需更新当前帖子的作者信息  
