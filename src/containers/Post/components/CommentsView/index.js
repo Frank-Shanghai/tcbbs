@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import "./style.css";
+import { getFormatDate } from '../../../../utils/date';
 
 class CommentsView extends Component {
     render() {
@@ -15,7 +16,7 @@ class CommentsView extends Component {
                                     <div className="sub">
                                         <span>{item.author.username}</span>
                                         <span>.</span>
-                                        <span>{item.updatedAt}</span>
+                                        <span>{getFormatDate(item.updatedAt)}</span>
                                     </div>
                                 </li>
                             ) : null

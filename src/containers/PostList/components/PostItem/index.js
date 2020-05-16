@@ -1,6 +1,7 @@
 import React from "react";
 import './style.css';
 import like from '../../../../images/like.png';
+import {getFormatDate} from '../../../../utils/date';
 
 // 无状态组件
 function PostItem(props) {
@@ -13,7 +14,7 @@ function PostItem(props) {
                 创建人： <span>{post.author.username}</span>
             </div>
             <div>
-                更新时间： <span>{post.updatedAt}</span>
+                更新时间： <span>{getFormatDate(post.updatedAt)}</span>
             </div>
             <div className="like">
                 <span>
