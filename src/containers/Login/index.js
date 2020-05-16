@@ -33,7 +33,7 @@ class Login extends Component {
         }
         else if(e.target.name === "password") {
             this.setState({
-                password: e.target.password
+                password: e.target.value
             });
         }
     };
