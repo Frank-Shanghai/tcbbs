@@ -1,10 +1,12 @@
 import { SHA1 } from "./SHA1";
 
-// TODO: Replace the AppId and AppKey with yours later
-const AppId = "A6053788184630";
-const AppKey = "8B3F5860-2646-2C47-DC50-39106919B260";
-// const AppId = 'A6032109929200';
-// const AppKey = '22DAAB12-777A-D941-BF0A-46EDD8C70138';
+// 下面是<React进阶之路>书中提供的API Clound Web API 相关信息，可用账户有 jack/123456, steve/123456
+// const AppId = "A6053788184630";
+// const AppKey = "8B3F5860-2646-2C47-DC50-39106919B260";
+
+// 下面是我自己实现的一个API Cloud Web API, 可用账户有 Frank/sa, TC/sa
+const AppId = 'A6032109929200';
+const AppKey = '22DAAB12-777A-D941-BF0A-46EDD8C70138';
 var now = Date.now();
 const secureAppKey = SHA1(AppId + 'UZ' + AppKey + 'UZ' + now) + '.' + now;
 

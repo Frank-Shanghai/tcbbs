@@ -9,8 +9,8 @@ class Login extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            userName: "jack",
-            password: "123456",
+            userName: "Frank", 
+            password: "sa",
             redirectToReferrer: false
         };
     }
