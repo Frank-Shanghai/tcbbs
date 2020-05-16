@@ -4,7 +4,9 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import connectRoute from '../../utils/connectRoute';
 import asyncComponent from "../../utils/AsyncComponent";
-import {actions as appActions, getError, getRequestQuantity} from '../../redux/modules/app';
+import { actions as appActions, getError, getRequestQuantity } from '../../redux/modules/app';
+import Loading from '../../components/Loading';
+import ModalDialog from '../../components/ModalDialog';
 
 
 const AsyncHome = connectRoute(asyncComponent(() => import("../Home")));
@@ -12,16 +14,26 @@ const AsyncLogin = connectRoute(asyncComponent(() => import("../Login")));
 
 
 class App extends Component {
+
     render() {
+        const { error, requestQuantity } = this.props;
+        const errorDialog = error && (
+            <ModalDialog onClose={this.props.removeError}>
+                {error.message || error}
+            </ModalDialog>
+        );
+
         return (
             <div>
                 <Router>
                     <Switch>
                         <Route exact path="/" component={AsyncHome} />
                         <Route path="/login" component={AsyncLogin} />
-                        <Route path="/posts" component={AsyncHome} />                        
+                        <Route path="/posts" component={AsyncHome} />
                     </Switch>
                 </Router>
+                {errorDialog}
+                {requestQuantity > 0 && <Loading />}
             </div>
         );
     }
@@ -36,8 +48,8 @@ const mapStateToProps = (state, props) => {
 
 const mapDispatchToProps = dispatch => {
     return {
-      ...bindActionCreators(appActions, dispatch)
+        ...bindActionCreators(appActions, dispatch)
     };
-  };
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(App);;
